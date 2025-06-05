@@ -1,0 +1,36 @@
+name: Azure VMへデプロイ
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリより最新のコードを取得する
+        uses: actions/checkout@v3
+
+      - name: SSH準備
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.VM_KEY }}
+
+      - name: 🚀 Deploy to Azure VM via SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
+            cd ~/my-express-app
+
+            echo "📦 Pulling latest code..."
+            git pull origin main
+
+            echo "🐳 Stopping old container..."
+            docker stop express-app || true
+            docker rm express-app || true
+
+            echo "🔨 Building and starting new container..."
+            docker build -t express-app .
+            docker run -d -p 3000:3000 --name express-app express-app
+          EOF
