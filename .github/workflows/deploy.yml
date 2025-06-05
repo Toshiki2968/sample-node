@@ -18,7 +18,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.VM_KEY }}
 
-      - name: Deploy to Azure VM via SSH
+      - name: SSHを使ってAzure VMへデプロイ
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
             cd ~/my-express-app
