@@ -21,7 +21,7 @@ jobs:
       - name: SSHを使ってAzure VMへデプロイ
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
-            cd ~/my-express-app
+            cd ~/sample-node
 
             echo "📦 Pulling latest code..."
             git pull origin main
