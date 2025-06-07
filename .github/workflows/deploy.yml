@@ -23,14 +23,14 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.VM_USER }}@${{ secrets.VM_HOST }} << 'EOF'
             cd ~/sample-node
 
-            echo "📦 Pulling latest code..."
+            echo "最新のコードを取得しています..."
             git pull origin main
 
-            echo "🐳 Stopping old container..."
+            echo "古いアプリを停止しています..."
             docker stop express-app || true
             docker rm express-app || true
 
-            echo "🔨 Building and starting new container..."
+            echo "新しいコンテナをビルド/起動しています..."
             docker build -t express-app .
             docker run -d -p 3000:3000 --name express-app express-app
           EOF
